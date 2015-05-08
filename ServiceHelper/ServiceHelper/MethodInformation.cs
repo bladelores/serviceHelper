@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace ServiceHelper
 {
-    public class MethodInfo
+    public class MethodInformation
     {
         private string name;
         //private MethodParameter[] inputParameters;
-        private MethodParameter[] outputParameters;
+        private MethodParameter outputParameter;
 
-        public MethodInfo(string name, /*MethodParameter[] inputParameters,*/ MethodParameter[] outputParameters)
+        public MethodInformation(string name, /*MethodParameter[] inputParameters,*/ MethodParameter outputParameter)
         {
             this.name = name;
             //this.inputParameters = inputParameters;
-            this.outputParameters = outputParameters;
+            this.outputParameter = outputParameter;
         }
         public string Name
         {
@@ -29,9 +29,9 @@ namespace ServiceHelper
             get { return inputParameters; }
         }
         */
-        public MethodParameter[] OutputParameters
+        public MethodParameter OutputParameter
         {
-            get { return outputParameters; }
+            get { return outputParameter; }
         }
     }
 }

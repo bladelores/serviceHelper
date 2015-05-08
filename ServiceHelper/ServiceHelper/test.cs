@@ -18,14 +18,7 @@ namespace ServiceHelper
 
             var methodsWithoutInput = sh.GetServiceMethods();
 
-            StreamReader responseStream = sh.CallMethod(methodsWithoutInput.FirstOrDefault().Name);
-
-            /*
-            Dictionary<string, object> parameters = new Dictionary<string,object>();
-            parameters.Add("value","HOLY STIH");
-
-            StreamReader responseStream = sh.CallMethod("GetData", parameters);
-            */
+            string test = sh.CallMethod<string>(methodsWithoutInput.FirstOrDefault().Name);
         }
     }
 }

@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MethodInfo.cs" />
+    <Compile Include="MethodInformation.cs" />
     <Compile Include="MethodParameter.cs" />
     <Compile Include="ServiceHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
