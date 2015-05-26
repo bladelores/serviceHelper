@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using System.Threading.Tasks;
-using System.IO;
+using System.Diagnostics;
 
 namespace ServiceHelper
 {
@@ -14,11 +14,15 @@ namespace ServiceHelper
         [Test]
         public void TestMethod()
         {
-            ServiceHelper sh = new ServiceHelper(new Uri("http://localhost:1473/Service1.svc"));
+            ReflectionServiceHelper refSH = new ReflectionServiceHelper(new Uri("http://localhost:1473/Service1.svc"));
+            var methodsWithoutInput = refSH.GetServiceMethods();
+            string test = refSH.CallMethod<string>(methodsWithoutInput.FirstOrDefault().Name);
+            //304 millisceonds
 
-            var methodsWithoutInput = sh.GetServiceMethods();
-
-            string test = sh.CallMethod<string>(methodsWithoutInput.FirstOrDefault().Name);
+            FactoryServiceHelper facSH = new FactoryServiceHelper(new Uri("http://localhost:1473/Service1.svc"));
+            var methodsWithoutInput2 = facSH.GetServiceMethods();
+            string test2 = facSH.CallMethod<string>(methodsWithoutInput.FirstOrDefault().Name);
+            //667 milliseconds
         }
     }
 }
