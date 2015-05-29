@@ -5,6 +5,7 @@ using System.IO;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Reflection;
+using System.Collections.Generic;
 
 
 namespace ServiceHelper
@@ -12,6 +13,9 @@ namespace ServiceHelper
     public class ReflectionServiceHelper : ServiceHelper
     {
         private ServiceDescription serviceInfo;
+        private Assembly serviceAssembly;
+        private object serviceInstance;
+        private Type serviceDeclarations;
 
         public ReflectionServiceHelper(Uri url)
         {
@@ -58,6 +62,33 @@ namespace ServiceHelper
             CompilerResults results = compiler.CompileAssemblyFromDom(parameters, codeUnit);
 
             return results.CompiledAssembly;
+        }
+
+        public List<MethodInformation> GetServiceMethods()
+        {
+            List<MethodInformation> methods = new List<MethodInformation>();
+            MethodInfo[] methodsInfo = serviceDeclarations.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+
+            foreach (System.Reflection.MethodInfo methodInfo in methodsInfo)
+            {
+                List<MethodParameter> inputParameters = new List<MethodParameter>();
+                foreach (ParameterInfo paramInfo in methodInfo.GetParameters())
+                {
+                    inputParameters.Add(new MethodParameter(paramInfo.Name, paramInfo.ParameterType.ToString()));
+                }
+
+                MethodParameter outputParameter = new MethodParameter(methodInfo.ReturnParameter.Name, methodInfo.ReturnType.ToString());
+
+                if (inputParameters.Count == 0)
+                    methods.Add(new MethodInformation(methodInfo.Name, /*inputParameters.ToArray(),*/ outputParameter));
+            }
+
+            return methods;
+        }
+
+        public T CallMethod<T>(string methodName)
+        {
+            return (T)serviceDeclarations.InvokeMember(methodName, BindingFlags.InvokeMethod, null, serviceInstance, null);
         }
        
     }
